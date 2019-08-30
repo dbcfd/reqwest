@@ -28,7 +28,7 @@ use native_tls::TlsConnector;
 use std::future::Future;
 use std::pin::Pin;
 use std::task::{Context, Poll};
-use tokio::{clock, timer::Delay};
+use tokio::timer::Delay;
 
 use log::{debug};
 
@@ -609,7 +609,7 @@ impl Client {
         let in_flight = self.inner.hyper.request(req);
 
         let timeout = self.inner.request_timeout.map(|dur| {
-            Delay::new(clock::now() + dur)
+            tokio::timer::delay(tokio::clock::now() + dur)
         });
 
         Pending {

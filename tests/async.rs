@@ -1,13 +1,9 @@
-#![feature(async_await)]
-
 #[macro_use]
 mod support;
 
-//use std::io::Write;
 use std::time::Duration;
 
 use futures::TryStreamExt;
-//use tokio::runtime::current_thread::Runtime;
 
 use reqwest::r#async::{Body, Client};
 use reqwest::r#async::multipart::{Form, Part};

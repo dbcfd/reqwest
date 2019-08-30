@@ -176,7 +176,7 @@ fn http_connector() -> crate::Result<HttpConnector> {
 
 #[cfg(not(feature = "trust-dns"))]
 fn http_connector() -> crate::Result<HttpConnector> {
-    Ok(HttpConnector::new(4))
+    Ok(HttpConnector::new())
 }
 
 async fn connect_with_maybe_proxy(inner: Inner, dst: Destination, is_proxy: bool, no_delay: bool) -> Result<(Conn, Connected), io::Error> {

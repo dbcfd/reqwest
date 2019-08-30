@@ -1,4 +1,4 @@
-use std::time::{Duration, Instant};
+use std::time::Duration;
 use std::pin::Pin;
 use std::task::{Context, Poll};
 use futures::future::TryFutureExt;
@@ -84,7 +84,7 @@ impl<S, T, E> Stream for WaitStream<S> where S: Stream<Item=Result<T, E>> {
         if let Some(to) = self.timeout.clone() {
             match self.as_mut().pending().as_pin_mut() {
                 None => {
-                    self.as_mut().pending().get_mut().replace(tokio::timer::Delay::new(Instant::now() + to));
+                    self.as_mut().pending().get_mut().replace(tokio::timer::delay(tokio::clock::now() + to));
                     Poll::Pending
                 }
                 Some(pending) => {
