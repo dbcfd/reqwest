@@ -9,7 +9,7 @@ use http::HeaderMap;
 
 use futures::{Stream, StreamExt};
 
-use super::{Body, Chunk};
+use super::Body;
 
 /// An async multipart/form-data request.
 pub struct Form {

@@ -225,8 +225,8 @@ impl SenderWrapper {
         self.inner.abort()
     }
 
-    pub fn send_data(&mut self, chunk: hyper::Chunk) -> Result<(), hyper::Chunk> {
-        self.inner.send_data(chunk)
+    pub async fn send_data(&mut self, chunk: hyper::Chunk) -> Result<(), hyper::Error> {
+        self.inner.send_data(chunk).await
     }
 
     fn inner(self: Pin<&mut Self>) -> Pin<&mut hyper::body::Sender> {
@@ -311,7 +311,7 @@ async fn send_future(sender: Sender) -> Result<(), crate::Error> {
 
         written += buf.len() as u64;
         let tx = tx.as_mut().expect("tx only taken on error");
-        if tx.send_data(buf.take().freeze().into()).is_err() {
+        if tx.send_data(buf.take().freeze().into()).await.is_err() {
             return Err(crate::error::timedout(None));
         }
     }
